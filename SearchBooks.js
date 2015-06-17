@@ -7,6 +7,7 @@ var {
     StyleSheet,
     View,
     Component,
+    Text,
     TextInput,
     TouchableHighlight,
     ActivityIndicatorIOS
@@ -55,7 +56,6 @@ var styles = StyleSheet.create({
        color: 'red'
    }
 });
-
 class SearchBooks extends Component {
   constructor(props) {
     super(props);
@@ -68,35 +68,42 @@ class SearchBooks extends Component {
   }
   render() {
     var spinner = this.state.isLoading ?
+        // if it is loading then load the ActivityIndicator
       ( <ActivityIndicatorIOS
           hidden='true'
           size='large' /> ) :
           ( <View/>);
       return (
-        <View style={styles.cotainer}>
-          <Text style={styles.instructions}> Search Book by Title </Text>
-          <View>
-            <Text style={styles.fieldLabel}>Book Title:</Text>
-            <TextInput style={styles.searchInput} onChange={this.bookTitleInput.bind(this)}/>
-          </View>
-          <TouchableHighlight
-            style={styles.button}
-            underlayColor='#f1c40f'
-            onPress={this.SearchBooks.bind(this)}>
-            <Text style={styles.buttonText}>Search</Text>
-          </TouchableHighlight>
-          {spinner}
-          <Text style={styles.console.errorMessage}></Text>
-        </View>
+        <View style={styles.container}>
+                <Text style={styles.instructions}>Search by book title and/or author</Text>
+                <View>
+                    <Text style={styles.fieldLabel}>Book Title:</Text>
+                    <TextInput style={styles.searchInput} onChange={this.bookTitleInput.bind(this)}/>
+                </View>
+                <View>
+                    <Text style={styles.fieldLabel}>Author:</Text>
+                    <TextInput style={styles.searchInput} onChange={this.bookAuthorInput.bind(this)}/>
+                </View>
+                <TouchableHighlight style={styles.button}
+                                    underlayColor='#f1c40f'
+                                    onPress={this.searchBooks.bind(this)}>
+                    <Text style={styles.buttonText}>Search</Text>
+                </TouchableHighlight>
+                {spinner}
+                <Text style={styles.errorMessage}>{this.state.errorMessage}</Text>
+            </View>
       );
   }
+  // set the title of the book
   bookTitleInput(event) {
-    this.setState({bookAuther: event.nativeEvent.text});
+    this.setState({bookTitle: event.nativeEvent.text});
   }
+  // set the author of the book
   bookAuthorInput(event) {
-    this.setState({bookAthor: event.nativeEvent.text});
+    this.setState({bookAuthor: event.nativeEvent.text});
   }
-  SearchBooks() {
+  // Called when you press the search button
+  searchBooks() {
     this.fetchData();
   }
   fetchData() {
